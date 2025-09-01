@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSGP - Student Services & Gate Pass Portal</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/Home/style.css' %}">
+
+</head>
+<body>
+
+    <header>
+        <h1>SSGP</h1>
+        <nav class="navbar">
+           
+            <button class="menu-toggle" id="menu-toggle">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="app.html">Home</a></li>
+                <li><a href="Screens/Service.html">Services</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <section class="hero-section">
+                <h2>Student Service & Gatepass Portal</h2>
+                <p>One portal for all student services – from leave to gatepass.</p>
+            </section>
+
+            <section class="roles-grid">
+                <div class="role-card student-card">
+                    <div class="card-icon">
+                        <svg class="icon-svg" width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6"></path></svg>
+                    </div>
+                    <h3>Student</h3>
+                    <p>Apply for leave or gatepass, and track approvals.</p>
+                    <a href="{% url 'login_view' 'student' %}"><button>Login with College ID</button></a>
+                </div>
+
+                <div class="role-card Administration-card">
+                    <div class="card-icon">
+                        <svg class="icon-svg" width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3>Administration</h3>
+                    <p>Approve requests, manage leave, and monitor students.</p>
+                    <a href="{% url 'login_view' 'authority' %}"><button>Administration Login</button></a>
+                </div>
+
+                <div class="role-card caretaker-card">
+                    <div class="card-icon">
+                      <svg class="icon-svg" width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>                    </div>
+                    <h3>Caretaker</h3>
+                    <p>Issue approved outpasses and generate QR codes.</p>
+                    <a href="{% url 'login_view' 'caretaker' %}"><button>Caretaker Login</button></a>
+                </div>
+
+                <div class="role-card security-card">
+                    <div class="card-icon">
+                      <svg class="icon-svg" width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>                    </div>
+                    <h3>Security</h3>
+                    <p>Scan QR codes to verify and log student entry/exit.</p>
+                    <a href="{% url 'login_view' 'security' %}"><button>Security Login</button></a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 SSGP Portal. All Rights Reserved.</p>
+    </footer>
+
+    <script src="{% static 'js/Home/Main.js' %}"></script>
+</body>
+</html>

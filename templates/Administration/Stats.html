@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Statistics - SSGP</title>
+    
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Feather Icons for UI elements -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+        .table-container { max-height: 450px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 0 0 0.75rem 0.75rem; }
+        .card-active { background-color: #eff6ff; border-color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-slate-100">
+    <div class="w-full min-h-screen">
+        <div class="flex-1 flex flex-col">
+            <header class="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-6 md:px-8 flex-shrink-0">
+                <a href="{% url 'administration_dashboard' %}" class="flex items-center justify-center w-12 h-12 text-gray-500 bg-gray-100 rounded-full hover:bg-blue-100 hover:text-blue-600 transition-colors duration-300" title="Back to Home">
+                    <i data-feather="home" class="w-6 h-6"></i>
+                </a>
+                <div class="text-center">
+                    <h2 class="text-xl font-bold text-gray-800">Live Campus Statistics</h2>
+                    <p class="text-sm text-gray-500">Real-time data for administrators</p>
+                </div>
+                <a href="/profile" class="flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-transform duration-300 hover:scale-110" title="View Profile">
+                    <i data-feather="user" class="w-6 h-6"></i>
+                </a>
+            </header>
+
+            <main class="flex-1 p-6 md:p-8">
+                <!-- Campus Status Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div id="show-all-students-card" class="bg-white p-6 rounded-xl shadow-md cursor-pointer transition-all duration-200 border-2 border-transparent card-active">
+                        <div class="flex items-center justify-between"><p class="text-sm font-medium text-gray-500">All Students</p><i data-feather="users" class="w-5 h-5 text-gray-400"></i></div>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">{{ all_students_count }}</p>
+                    </div>
+                    <div id="show-outside-card" class="bg-white p-6 rounded-xl shadow-md cursor-pointer transition-all duration-200 border-2 border-transparent">
+                        <div class="flex items-center justify-between"><p class="text-sm font-medium text-gray-500">Students Outside Campus</p><i data-feather="log-out" class="w-5 h-5 text-gray-400"></i></div>
+                        <p class="text-3xl font-bold text-yellow-600 mt-2">{{ outside_count }}</p>
+                    </div>
+                    <div id="show-caretakers-card" class="bg-white p-6 rounded-xl shadow-md cursor-pointer transition-all duration-200 border-2 border-transparent">
+                         <div class="flex items-center justify-between"><p class="text-sm font-medium text-gray-500">Caretakers on Duty</p><i data-feather="shield" class="w-5 h-5 text-gray-400"></i></div>
+                        <p class="text-3xl font-bold text-blue-600 mt-2">{{ caretakers_count }}</p>
+                    </div>
+                    <div id="show-late-card" class="bg-white p-6 rounded-xl shadow-md cursor-pointer transition-all duration-200 border-2 border-transparent">
+                         <div class="flex items-center justify-between"><p class="text-sm font-medium text-gray-500">Late Entries</p><i data-feather="clock" class="w-5 h-5 text-gray-400"></i></div>
+                        <p class="text-3xl font-bold text-red-600 mt-2">{{ late_count }}</p>
+                    </div>
+                </div>
+
+                <!-- Filters and Tables Section -->
+                <div class="bg-white rounded-xl shadow-md">
+                    <div class="p-6 bg-slate-50 rounded-t-xl border-b border-gray-200 space-y-4">
+                        <div class="relative">
+                            <i data-feather="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"></i>
+                            <input type="text" id="shared-search-filter" placeholder="Search by name or ID..." class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg text-base focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        
+                        <div id="all-students-filters" class="flex flex-wrap items-center gap-4">
+                            <select id="year-filter-all" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Years</option><option value="1">1st Year</option><option value="2">2nd Year</option><option value="3">3rd Year</option></select>
+                            <select id="branch-filter-all" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Branches</option><option value="CSE">CSE</option><option value="ECE">ECE</option><option value="MECH">MECH</option><option value="CHEM">CHEM</option></select>
+                            <select id="hostel-filter-all" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Hostels</option><option value="Boys Hostel A">Boys Hostel A</option><option value="Boys Hostel B">Boys Hostel B</option><option value="Girls Hostel A">Girls Hostel A</option><option value="Girls Hostel B">Girls Hostel B</option></select>
+                            <select id="gender-filter-all" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Genders</option><option value="MALE">Male</option><option value="FEMALE">Female</option></select>
+                        </div>
+                        <div id="outside-filters" class="hidden flex-wrap items-center gap-4">
+                            <select id="request-type-filter" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Types</option><option value="leave">Leave</option><option value="outing">Outing</option></select>
+                            <select id="year-filter-outside" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Years</option><option value="1">1st Year</option><option value="2">2nd Year</option><option value="3">3rd Year</option></select>
+                            <select id="branch-filter-outside" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Branches</option><option value="CSE">CSE</option><option value="ECE">ECE</option><option value="MECH">MECH</option><option value="CHEM">CHEM</option></select>
+                            <select id="gender-filter-outside" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Genders</option><option value="MALE">Male</option><option value="FEMALE">Female</option></select>
+                        </div>
+                        <div id="caretakers-filters" class="hidden flex-wrap items-center gap-4">
+                            <select id="hostel-filter-caretaker" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Hostels</option><option value="Boys Hostel A">Boys Hostel A</option><option value="Boys Hostel B">Boys Hostel B</option><option value="Girls Hostel A">Girls Hostel A</option><option value="Girls Hostel B">Girls Hostel B</option></select>
+                            <select id="gender-filter-caretaker" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Genders</option><option value="MALE">Male</option><option value="FEMALE">Female</option></select>
+                        </div>
+                         <div id="late-entry-filters" class="hidden flex-wrap items-center gap-4">
+                            <select id="year-filter-late" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Years</option><option value="1">1st Year</option><option value="2">2nd Year</option><option value="3">3rd Year</option></select>
+                            <select id="branch-filter-late" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Branches</option><option value="CSE">CSE</option><option value="ECE">ECE</option><option value="MECH">MECH</option><option value="CHEM">CHEM</option></select>
+                            <select id="gender-filter-late" class="w-full md:w-auto px-3 py-2 border border-gray-300 rounded-md text-sm"><option value="">All Genders</option><option value="MALE">Male</option><option value="FEMALE">Female</option></select>
+                        </div>
+                    </div>
+
+                    <!-- All Students Table -->
+                    <div id="all-students-table">
+                        <div class="table-container">
+                            <table class="w-full text-sm text-left"><thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0"><tr><th class="px-6 py-3">Student Name</th><th class="px-6 py-3">ID Number</th><th class="px-6 py-3">Gender</th><th class="px-6 py-3">Branch</th><th class="px-6 py-3">Year</th><th class="px-6 py-3">Hostel</th></tr></thead>
+                                <tbody id="all-students-tbody">
+                                    {% for student in all_students %}
+                                    <tr class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium text-gray-900">{{ student.user.get_full_name|default:student.user.username }}</td>
+                                        <td class="px-6 py-4">{{ student.user.username }}</td>
+                                        <td class="px-6 py-4">{{ student.user.get_gender_display }}</td>
+                                        <td class="px-6 py-4">{{ student.dept }}</td>
+                                        <td class="px-6 py-4">{{ student.year }}</td>
+                                        <td class="px-6 py-4">{{ student.hostel }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="js-no-results" style="display: none;"><td colspan="100%" class="text-center py-12 text-gray-500"><div class="flex flex-col items-center justify-center"><i data-feather="search" class="w-10 h-10 mb-3 text-gray-400"></i><p class="font-semibold text-lg">No Matching Records Found</p><p class="text-sm">Try adjusting your search or filter criteria.</p></div></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Students Outside Campus Table -->
+                    <div id="outside-table" class="hidden">
+                        <div class="table-container">
+                            <table class="w-full text-sm text-left"><thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0"><tr><th class="px-6 py-3">Student Name</th><th class="px-6 py-3">ID Number</th><th class="px-6 py-3">Gender</th><th class="px-6 py-3">Branch</th><th class="px-6 py-3">Year</th><th class="px-6 py-3">Request Type</th></tr></thead>
+                                <tbody id="outside-tbody">
+                                    {% for gp in outside_gatepasses %}
+                                    <tr class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium text-gray-900">{{ gp.student.user.get_full_name|default:gp.student.user.username }}</td>
+                                        <td class="px-6 py-4">{{ gp.student.user.username }}</td>
+                                        <td class="px-6 py-4">{{ gp.student.user.get_gender_display }}</td>
+                                        <td class="px-6 py-4">{{ gp.student.dept }}</td>
+                                        <td class="px-6 py-4">{{ gp.student.year }}</td>
+                                        <td class="px-6 py-4">{{ gp.get_request_type_display }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="js-no-results" style="display: none;"><td colspan="100%" class="text-center py-12 text-gray-500"><div class="flex flex-col items-center justify-center"><i data-feather="search" class="w-10 h-10 mb-3 text-gray-400"></i><p class="font-semibold text-lg">No Matching Records Found</p><p class="text-sm">Try adjusting your search or filter criteria.</p></div></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Caretakers on Duty Table -->
+                    <div id="caretakers-table" class="hidden">
+                        <div class="table-container">
+                            <table class="w-full text-sm text-left"><thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0"><tr><th class="px-6 py-3">Caretaker Name</th><th class="px-6 py-3">Gender</th><th class="px-6 py-3">Assigned Block</th><th class="px-6 py-3">Contact</th></tr></thead>
+                                <tbody id="caretakers-tbody">
+                                    {% for caretaker in all_caretakers %}
+                                    <tr class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium text-gray-900">{{ caretaker.user.get_full_name|default:caretaker.user.username }}</td>
+                                        <td class="px-6 py-4">{{ caretaker.user.get_gender_display }}</td>
+                                        <td class="px-6 py-4">{{ caretaker.hostel_assigned }}</td>
+                                        <td class="px-6 py-4">{{ caretaker.user.ph_no|default:'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="js-no-results" style="display: none;"><td colspan="100%" class="text-center py-12 text-gray-500"><div class="flex flex-col items-center justify-center"><i data-feather="search" class="w-10 h-10 mb-3 text-gray-400"></i><p class="font-semibold text-lg">No Matching Records Found</p><p class="text-sm">Try adjusting your search or filter criteria.</p></div></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Late Entry Table -->
+                    <div id="late-entry-table" class="hidden">
+                        <div class="table-container">
+                            <table class="w-full text-sm text-left"><thead class="text-xs text-gray-700 uppercase bg-gray-50 sticky top-0"><tr><th class="px-6 py-3">Student Name</th><th class="px-6 py-3">ID Number</th><th class="px-6 py-3">Gender</th><th class="px-6 py-3">Branch</th><th class="px-6 py-3">Year</th><th class="px-6 py-3">Late By</th></tr></thead>
+                                <tbody id="late-entry-tbody">
+                                    {% for item in late_students_data %}
+                                    <tr class="bg-white border-b hover:bg-gray-50">
+                                        <td class="px-6 py-4 font-medium text-gray-900">{{ item.gatepass.student.user.get_full_name|default:item.gatepass.student.user.username }}</td>
+                                        <td class="px-6 py-4">{{ item.gatepass.student.user.username }}</td>
+                                        <td class="px-6 py-4">{{ item.gatepass.student.user.get_gender_display }}</td>
+                                        <td class="px-6 py-4">{{ item.gatepass.student.dept }}</td>
+                                        <td class="px-6 py-4">{{ item.gatepass.student.year }}</td>
+                                        <td class="px-6 py-4 font-medium text-red-600">{{ item.late_by }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    <tr class="js-no-results" style="display: none;"><td colspan="100%" class="text-center py-12 text-gray-500"><div class="flex flex-col items-center justify-center"><i data-feather="search" class="w-10 h-10 mb-3 text-gray-400"></i><p class="font-semibold text-lg">No Matching Records Found</p><p class="text-sm">Try adjusting your search or filter criteria.</p></div></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="{% static 'js/Administration/Stats.js' %}"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

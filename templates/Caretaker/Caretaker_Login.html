@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caretaker Login - SSGP Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/Caretaker/Caretaker_login.css' %}">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="header-icon">
+                    <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                </div>
+                <h2>Caretaker Portal</h2>
+                <p>Sign in to manage gate passes.</p>
+            </div>
+
+            <form class="login-form" action="{% url 'login_view' role='caretaker' %}" method="post" >
+                {% csrf_token %}
+                <div class="input-group">
+                   <label for="id_username">Username</label>
+                   {{form.username}}
+                </div>
+                <div class="input-group">
+                    <label for="id_passeord">Password</label>
+                    {{form.password}}
+                 </div>
+                {% if form.non_field_errors %}
+                    <div class="form-errors" style="color: red; margin-bottom: 1rem;">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <div class="form-options">
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+
+            <div class="back-link">
+                <a href="{% url 'home' %}">&larr; Back to Main Portal</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f7fc;
+    color: #374151;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.login-card {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.login-header .header-icon {
+    color: #d97706; /* Amber color for Caretaker */
+    background-color: #fef3c7; /* Light amber background */
+    padding: 0.75rem;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    display: inline-flex;
+}
+
+.login-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0;
+}
+
+.login-header p {
+    color: #6b7280;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.login-form .input-group {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.login-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #d97706;
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+}
+
+.form-options {
+    text-align: right;
+    margin-top: -1rem; /* Pulls it closer to the password field */
+    margin-bottom: 1.5rem;
+}
+
+.forgot-password {
+    font-size: 0.875rem;
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #d97706; /* Amber color */
+    color: #ffffff;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.login-btn:hover {
+    background-color: #b45309;
+}
+
+.back-link {
+    margin-top: 2rem;
+}
+
+.back-link a {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}

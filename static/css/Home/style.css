@@ -1,0 +1,204 @@
+/* --- Basic Setup --- */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f7fc;
+  color: #374151;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* --- Main Content Area --- */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* --- Main Container --- */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+}
+
+/* --- Header & Navigation --- */
+header {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: relative; 
+}
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0978b8;
+  cursor: pointer;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+.nav-links a {
+  color: #4b5563;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+.nav-links a:hover {
+  color: #4f46e5;
+}
+
+/* --- Mobile Menu Styles --- */
+.menu-toggle {
+  display: none; /* Hidden by default on large screens */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #374151;
+}
+
+/* --- Hero Section --- */
+.hero-section {
+  margin-bottom: 1.5rem;
+}
+.hero-section h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #111827;
+}
+.hero-section p {
+  font-size: 1.125rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Login Cards Grid --- */
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Individual Card Styling --- */
+.role-card {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+.card-icon {
+  padding: 1rem;
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+  display: inline-flex;
+}
+.role-card h3 {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+.role-card p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  flex-grow: 1;
+}
+.role-card a {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+  margin-top: 1.5rem;
+}
+.role-card button {
+  width: 100%;
+  color: white;
+  padding: 0.75rem 0;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background-color 0.2s ease;
+}
+.role-card button:hover {
+  opacity: 0.9;
+}
+
+.student-card .card-icon { background-color: #e0e7ff; }
+.student-card .icon-svg { color: #4f46e5; }
+.student-card button { background-color: #4f46e5; }
+
+.Administration-card .card-icon { background-color: #d1fae5; }
+.Administration-card .icon-svg { color: #0fbe58; }
+.Administration-card button { background-color: #00c050; }
+
+.caretaker-card .card-icon { background-color: #fef3c7; }
+.caretaker-card .icon-svg { color: #d97706; }
+.caretaker-card button { background-color: #d97706; }
+
+.security-card .card-icon { background-color: #f1f5f9; } /* Light slate gray */
+.security-card .icon-svg { color: #475569; } /* Medium slate gray */
+.security-card button { background-color:  #3b6e6e; } /* Medium slate gray */
+
+
+/* --- Footer --- */
+footer {
+  background-color: #1f2937; 
+  color: #d1d5db;
+  text-align: center;
+  padding: 0;
+  font-size: 8px;
+  font-weight: 500;
+}
+
+/* --- Responsive Styles for Mobile --- */
+@media (max-width: 768px) {
+  .menu-toggle {
+      display: block; 
+  }
+  .nav-links {
+      display: none; 
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: white;
+      width: 25%; 
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+      text-align: center;
+      border-bottom-left-radius: 8px; 
+  }
+  .nav-links.show {
+      display: flex; 
+      align-items: center;
+    }
+  .nav-links li {
+      padding: 0.5rem 0;
+  }
+  .hero-section h2 {
+      font-size: 2rem;
+  }
+}
+

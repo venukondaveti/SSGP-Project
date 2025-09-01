@@ -1,0 +1,45 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6; /* Light gray background */
+}
+.detail-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+}
+.detail-grid dt { 
+    color: #6b7280; 
+    font-weight: 500;
+}
+.detail-grid dd { 
+    color: #1f2937; 
+    font-weight: 600;
+}
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: #4f46e5;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.action-button:hover {
+    background-color: #4338ca;
+    transform: translateY(-2px);
+}
+.no-pass-message {
+    text-align: center;
+    color: #4b5563;
+    font-weight: 500;
+    background-color: white;
+    padding: 3rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}

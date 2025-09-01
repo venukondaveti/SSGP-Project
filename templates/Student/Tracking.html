@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Outpass - SSGP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/Student/Tracking.css' %}">
+</head>
+<body>
+
+<div class="page-wrapper">
+    <div class="main-content">
+        <header class="header">
+            <a href="{% url 'student_dashboard' %}" class="back-btn" aria-label="Back to Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </a>
+            <h1 class="header-title">Outpass Status Tracker</h1>
+        </header>
+
+        <main class="page-content">
+            <div class="container">
+                
+                {% if latest_pass %}
+                    <div class="student-details-card">
+                        <div class="student-info">
+                            <img src="https://placehold.co/100x100/E2E8F0/4A5568?text={{user.first_name|first|upper}}{{user.last_name|first|upper}}" alt="Student Photo" class="student-photo">
+                            <div>
+                                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                                <p>{{ user.username }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Special card to show if the pass was rejected -->
+                    {% if latest_pass.status == 'rejected' %}
+                    <div class="tracker-card rejected-card">
+                        <div class="status-pill status-rejected">
+                            {{ latest_pass.get_status_display }}
+                        </div>
+                        <div class="details-content">
+                            <p>Your outpass request for <strong>{{ latest_pass.reason|capfirst}}</strong> was rejected.Please check your history or contact the warden for more details.</p>
+                        </div>
+                    </div>
+
+                    <!-- The normal tracker card for all other statuses -->
+                    {% else %}
+                    <div class="tracker-card">
+                        <div class="timeline-section">
+                            <div class="timeline-wrapper">
+                                {% with current_status=latest_pass.status %}
+                                <div class="timeline-line">
+                                    <!-- Progress bar updated for 3 steps -->
+                                    {% if current_status == 'pending' %}
+                                        <div class="timeline-line-progress" style="height: 0%;"></div>
+                                    {% elif current_status == 'approved' %}
+                                        <div class="timeline-line-progress" style="height: 50%;"></div>
+                                    {% elif current_status == 'issued' %}
+                                        <div class="timeline-line-progress" style="height: 100%;"></div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="timeline-steps-container">
+                                    <!-- Step 1: Pending -->
+                                    <div class="timeline-step {% if current_status != 'pending' %}completed{% endif %} {% if current_status == 'pending' %}active{% endif %}">
+                                        <div class="step-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg></div>
+                                        <div class="step-details">
+                                            <h4>Pending</h4>
+                                            <p>{{ latest_pass.created_at|date:"d M, h:i A" }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Step 2: Approved -->
+                                    <div class="timeline-step {% if current_status == 'issued' %}completed{% endif %} {% if current_status == 'approved' %}active{% endif %}">
+                                        <div class="step-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                                        <div class="step-details">
+                                            <h4>Approved by Warden</h4>
+                                            <p>{% if current_status == 'approved' or current_status == 'issued' %}{{ latest_pass.updated_at|date:"d M, h:i A" }}{% else %}Pending...{% endif %}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Step 3: Issued -->
+                                    <div class="timeline-step {% if current_status == 'issued' %}active{% endif %}">
+                                        <div class="step-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg></div>
+                                        <div class="step-details">
+                                            <h4>Pass Issued</h4>
+                                            <p>{% if current_status == 'issued' %}Ready to exit{% else %}Pending...{% endif %}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endwith %}
+                            </div>
+                        </div>
+                        <div class="details-section">
+                            <div class="status-pill status-{{ latest_pass.status }}">
+                                {{ latest_pass.get_status_display }}
+                            </div>
+                            <div class="details-content">
+                                <p><strong>PassId:</strong> {{ latest_pass.id }}</p>
+                                <p><strong>Destination:</strong> {{ latest_pass.address }}</p>
+                                <p><strong>Reason:</strong> {{ latest_pass.reason }}</p>
+                                <p><strong>Departure:</strong> {{ latest_pass.departure_datetime|date:"d M, Y, h:i A" }}</p>
+                            </div>
+                            <div class="actions-footer">
+                                <!-- Button is enabled once approved, so student can see the QR code. -->
+                                <a href="{% url 'current_pass'%}"><button class="btn btn-primary" {% if latest_pass.status != 'issued' %}disabled{% endif %}>
+                                    View Outpass
+                                </button></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% else %}
+                <div class="no-pass-message">
+                    <h2>No Current Outpass</h2>
+                    <p>You do not have any outpass requests that are currently being processed.</p>
+                    <a href="{% url 'leave_request' %}" class="btn">Request a New Pass</a> 
+                </div>
+                {% endif %}
+
+            </div>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

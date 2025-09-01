@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave & Outpass Management - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/Administration/Requests.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="{% url 'administration_dashboard' %}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+            <h1>Admin Dashboard</h1>
+            <p>Manage all leave and outpass requests.</p>
+        </header>
+
+        <div class="content-card">
+            <h2>Manage Requests</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card stat-total"><p class="stat-number">{{ stats.total_count }}</p><p class="stat-label">Total</p></div>
+                <div class="stat-card stat-pending"><p class="stat-number">{{ stats.pending_count }}</p><p class="stat-label">Pending</p></div>
+                <div class="stat-card stat-approved"><p class="stat-number">{{ stats.approved_count }}</p><p class="stat-label">Approved</p></div>
+                <div class="stat-card stat-rejected"><p class="stat-number">{{ stats.rejected_count }}</p><p class="stat-label">Rejected</p></div>
+            </div>
+
+            <form method="GET" action="{% url 'manage_requests' %}">
+                <div class="filters-container">
+                    <div class="search-group">
+                        <div class="search-wrapper">
+                            <input type="text" name="search" id="search-input" placeholder="Search by student name or ID...">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <button type="submit" class="btn-search">Search</button>
+                    </div>
+
+                    <div id="filter-buttons">
+                        <button type="submit" name="status" value="pending" class="filter-btn">Pending</button>
+                        <button type="submit" name="status" value="approved" class="filter-btn">Approved</button>
+                        <button type="submit" name="status" value="All" class="filter-btn">All</button>
+                        <button type="submit" name="status" value="rejected" class="filter-btn">Rejected</button>
+                    </div>
+                </div>
+            </form>
+            
+            <div id="request-list">
+                {% for req in requests %}
+                    <div class="request-item">
+                        <div class="request-info">
+                            <div class="name-status">
+                                <span class="name">{{ req.student.user.get_full_name }} ({{ req.student.user.username }})</span>
+                                <span class="request-id">#{{ req.id }}</span>
+                                <span class="status-badge status-{{ req.status|lower }}">{{ req.get_status_display }}</span>
+                            </div>
+                            <p class="details">
+                                <strong>{{ req.get_request_type_display }}</strong> from 
+                                <strong>{{ req.departure_datetime|date:"M d, Y, h:i A" }}</strong> to
+                                <strong>{{ req.return_datetime|date:"M d, Y, h:i A" }}</strong>
+                            </p>
+                            <p class="reason">"{{ req.reason }}"</p>
+                        </div>
+                        <div class="request-actions">
+                            {% if req.status == 'pending' %}
+                                <form method="POST" action="{% url 'update_status' req.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="approved">
+                                    <button type="submit" class="action-btn btn-approve"><i class="fas fa-check"></i> Approve</button>
+                                </form>
+                                <form method="POST" action="{% url 'update_status' req.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="rejected">
+                                    <button type="submit" class="action-btn btn-reject"><i class="fas fa-times"></i> Reject</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No matching requests found.</p>
+                {% endfor %}
+            </div>
+
+            </div>
+    </div>
+    <script src="{% static 'js/Administration/Requests.js' %}"></script>
+</body>
+</html>

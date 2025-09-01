@@ -1,0 +1,176 @@
+/* General Body Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6; /* Equivalent to bg-gray-100 */
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+/* Main Form Container */
+.form-container {
+    width: 100%;
+    max-width: 56rem; /* Equivalent to max-w-4xl */
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 0.75rem; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Equivalent to shadow-lg */
+    overflow: hidden;
+}
+
+/* Form Header */
+.form-header {
+    background-color: #4f46e5; /* Equivalent to bg-indigo-600 */
+    padding: 1rem 1rem;
+    text-align: center;
+}
+
+.form-header h1 {
+    font-size: 1.875rem; /* Equivalent to text-3xl */
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.form-header p {
+    color: #c7d2fe; /* Equivalent to text-indigo-200 */
+    margin-top: 0.5rem;
+}
+
+/* Form Body */
+#leaveRequestForm {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Form Sections (Student Details, Request Details) */
+.form-section {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 1.5rem;
+}
+/* Remove border from the last section */
+#leaveRequestForm > div:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.form-section h2 {
+    font-size: 1.25rem; /* Equivalent to text-xl */
+    font-weight: 600;
+    color: #1f2937; /* Equivalent to text-gray-800 */
+    margin-bottom: 1rem;
+}
+
+/* Grid Layout for inputs */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+/* Form Group for label + input */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+/* Form Labels */
+.form-label {
+    font-size: 0.875rem; /* Equivalent to text-sm */
+    font-weight: 500;
+    color: #374151; /* Equivalent to text-gray-700 */
+}
+
+/* Form Inputs, Textareas */
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db; /* Equivalent to border-gray-300 */
+    border-radius: 0.5rem; /* Equivalent to rounded-lg */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+}
+
+.form-control[readonly] {
+    background-color: #f3f4f6; /* Equivalent to bg-gray-100 */
+    cursor: not-allowed;
+}
+
+/* Radio Button Styles */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+.radio-label input[type="radio"] {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
+/* Form Submission Area */
+.form-footer {
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.submit-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.75rem 2rem;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    color: #ffffff;
+    background-color: #4f46e5;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.submit-btn:hover {
+    background-color: #4338ca; /* Equivalent to hover:bg-indigo-700 */
+}
+
+.submit-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
+}
+
+/* Responsive Media Queries */
+@media (min-width: 768px) { /* Equivalent to md: breakpoint */
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .radio-group {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 640px) { /* Equivalent to sm: breakpoint */
+    #leaveRequestForm {
+        padding: 2rem;
+    }
+}

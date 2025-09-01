@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login - SSGP Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'css/Student/student_login.css' %}">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <svg class="header-icon" width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6"></path>
+                </svg>
+                <h2>Student Portal</h2>
+                <p>Sign in to access your dashboard.</p>
+            </div>
+
+            <form class="login-form" method="post" action="{% url 'login_view' role='student' %}">                {% csrf_token %}
+                
+                <div class="input-group">
+                    <label for="id_username">Username</label>
+                    {{ form.username }}
+                </div>
+                
+                <div class="input-group">
+                    <label for="id_password">Password</label>
+                    {{ form.password }}
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <div class="form-errors" style="color: red; margin-bottom: 1rem;">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                
+                <button type="submit" class="login-btn">Login</button>
+                
+                <div class="separator">or</div>
+                
+                <button type="button" class="google-signin-btn">
+                    <svg class="google-icon" ...></svg>
+                    <span>Sign in with Google</span>
+                </button>
+            </form>
+
+            <div class="back-link">
+                <a href="{% url 'home' %}">&larr; Back to Main Portal</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

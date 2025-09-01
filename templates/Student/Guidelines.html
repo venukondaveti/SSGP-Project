@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Guidelines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb; /* Equivalent to bg-gray-50 */
+            color: #1f2937; /* Equivalent to text-gray-800 */
+            margin: 0;
+            padding: 1rem;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 896px; /* Equivalent to max-w-4xl */
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+        }
+
+        /* Back to Home Link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #2563eb; /* Equivalent to text-blue-600 */
+            font-weight: 500;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .back-link:hover {
+            color: #1d4ed8; /* Equivalent to hover:text-blue-800 */
+            transform: translateX(-4px);
+        }
+
+        .back-link svg {
+            width: 1.25rem; /* Equivalent to h-5 w-5 */
+            height: 1.25rem;
+            margin-right: 0.5rem; /* Equivalent to mr-2 */
+        }
+        
+        /* Content Card */
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem; /* Equivalent to rounded-lg */
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* Equivalent to shadow-md */
+            padding: 2rem;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb; /* Equivalent to border-gray-200 */
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            font-size: 1.875rem; /* Equivalent to text-3xl */
+            line-height: 2.25rem;
+            font-weight: 700;
+            color: #111827; /* Equivalent to text-gray-900 */
+            margin: 0;
+        }
+
+        .header p {
+            font-size: 0.875rem; /* Equivalent to text-sm */
+            color: #6b7280; /* Equivalent to text-gray-500 */
+            margin-top: 0.5rem;
+        }
+
+        /* Guidelines List */
+        .guidelines-list > div:not(:last-child) {
+            margin-bottom: 1.5rem; /* Equivalent to space-y-6 */
+        }
+
+        .guideline-item {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .guideline-number {
+            flex-shrink: 0;
+            height: 2rem;
+            width: 2rem;
+            border-radius: 9999px; /* Equivalent to rounded-full */
+            background-color: #3b82f6; /* Equivalent to bg-blue-500 */
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem; /* Equivalent to text-lg */
+        }
+
+        .guideline-content {
+            margin-left: 1rem;
+        }
+
+        .guideline-content h3 {
+            font-size: 1.125rem; /* Equivalent to text-lg */
+            font-weight: 600;
+            color: #111827; /* Equivalent to text-gray-900 */
+            margin: 0;
+        }
+
+        .guideline-content p {
+            margin-top: 0.25rem;
+            color: #4b5563; /* Equivalent to text-gray-600 */
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            body {
+                padding: 0.5rem;
+            }
+            .container {
+                padding: 0.5rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+            .header h1 {
+                font-size: 1.5rem; /* Equivalent to sm:text-2xl */
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Back to Home Link -->
+        <div>
+            <a href="{% url 'student_dashboard' %}" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Home
+            </a>
+        </div>
+
+        <!-- Main Content Card -->
+        <div class="card">
+            
+            <!-- Header -->
+            <div class="header">
+                <h1>Student Guidelines & Code of Conduct</h1>
+                <p>Adherence to these rules is mandatory for all students.</p>
+            </div>
+
+            <!-- Guidelines List -->
+            <div class="guidelines-list">
+                
+                <!-- Guideline 1: Attendance -->
+                <div class="guideline-item">
+                    <div class="guideline-number">1</div>
+                    <div class="guideline-content">
+                        <h3>Academic Attendance</h3>
+                        <p>A minimum of <strong>75% academic attendance</strong> is mandatory for all students in every course. Failure to meet this requirement may result in being barred from sitting for final examinations.</p>
+                    </div>
+                </div>
+
+                <!-- Guideline 2: Emergency Leave -->
+                <div class="guideline-item">
+                    <div class="guideline-number">2</div>
+                    <div class="guideline-content">
+                        <h3>Emergency Leave Procedure</h3>
+                        <p>In case of a genuine medical or family emergency requiring an immediate outpass or leave, students can <strong>directly contact the on-duty Caretaker</strong>. This provision is for verified emergencies only.</p>
+                    </div>
+                </div>
+
+                <!-- Guideline 3: Leave Permission -->
+                <div class="guideline-item">
+                    <div class="guideline-number">3</div>
+                    <div class="guideline-content">
+                        <h3>Parental Permission for Leave</h3>
+                        <p>You must have <strong>parents' permission</strong> for any planned outpass or leave. This must be obtained through the official channels before leaving the campus.</p>
+                    </div>
+                </div>
+
+                <!-- Guideline 4: Campus Reporting Time -->
+                <div class="guideline-item">
+                    <div class="guideline-number">4</div>
+                    <div class="guideline-content">
+                        <h3>Campus Reporting Time</h3>
+                        <p>You must report back to campus <strong>before the given time</strong>. Late entries will be documented and may lead to disciplinary action.</p>
+                    </div>
+                </div>
+
+                <!-- Guideline 5: Off-Campus Safety -->
+                <div class="guideline-item">
+                    <div class="guideline-number">5</div>
+                    <div class="guideline-content">
+                        <h3>Safety Off-Campus</h3>
+                        <p>The Administration is <strong>not accountable for your safety</strong> after you leave the campus premises. You are expected to conduct yourself responsibly at all times.</p>
+                    </div>
+                </div>
+
+                <!-- Guideline 6: ID Card -->
+                <div class="guideline-item">
+                    <div class="guideline-number">6</div>
+                    <div class="guideline-content">
+                        <h3>Student Identification</h3>
+                        <p>Students must carry their official ID card at all times on campus and present it upon request by any staff or security personnel.</p>
+                    </div>
+                </div>
+
+                <!-- Guideline 7: Anti-Ragging -->
+                <div class="guideline-item">
+                    <div class="guideline-number">7</div>
+                    <div class="guideline-content">
+                        <h3>Anti-Ragging Policy</h3>
+                        <p>Ragging in any form is a serious criminal offense and is strictly prohibited. Any student found engaging in or supporting ragging will face immediate suspension and legal action.</p>
+                    </div>
+                </div>
+
+                 <!-- Guideline 8: General Conduct -->
+                 <div class="guideline-item">
+                    <div class="guideline-number">8</div>
+                    <div class="guideline-content">
+                        <h3>General Conduct</h3>
+                        <p>Vandalism, possession of prohibited substances, and disruptive behavior are strictly forbidden and will result in severe disciplinary measures.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

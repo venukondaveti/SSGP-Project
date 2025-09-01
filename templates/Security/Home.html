@@ -1,0 +1,120 @@
+{% load static %}
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Dashboard - SSGP</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/html5-qrcode"></script>
+
+    <link rel="stylesheet" href="{% static 'css/Security/Home.css' %}">
+</head>
+<body>
+    <div class="page-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="sidebar-title">SSGP</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-link active">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-link">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8"/></svg>
+                    <span>Reports</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="{% url 'logout' %}" class="nav-link">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <div class="overlay"></div>
+
+        <div class="main-content">
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-button" aria-label="Open Menu">
+                        <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                    </button>
+                    <h2 class="header-title">Security Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <p class="user-name">{{ request.user.get_full_name|default:request.user.username }}</p>
+                        <p class="date-time" id="current-date-time">Security</p> </div>
+                    <img class="profile-picture" src="{% static 'images/default-avatar.png' %}" alt="Profile Picture">
+                </div>
+            </header>
+
+            <main class="page-content">
+                <div class="main-grid">
+                    <div class="card">
+                        <h2>QR Code Scanner</h2>
+                        <div id="qr-reader"></div>
+                        <button id="scan-button" class="btn btn-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="10" height="10" rx="1"/></svg>
+                            <span>Start Scanning</span>
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h2>Scan Details</h2>
+                        <div id="last-scan-details" class="last-scan-card">
+                            <h3>Scanner Idle</h3>
+                            <div class="scan-details">
+                                <p>Press "Start Scanning" to begin.</p>
+                            </div>
+                        </div>
+
+                        <table class="log-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Student ID</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="log-body">
+                                {% for log in recent_scans %}
+                                    <tr>
+                                        <td>{{ log.student.user.get_full_name|default:log.student.user.username }}</td>
+                                        <td>{{ log.student.user.username }}</td>
+                                        {% if log.entry_time %}
+                                            <td><span class="scan-status entry">Entry</span></td>
+                                            <td>{{ log.entry_time|localtime|date:"d M Y, P" }}</td>
+                                        {% else %}
+                                            <td><span class="scan-status exit">Exit</span></td>
+                                            <td>{{ log.exit_time|localtime|date:"d M Y, P" }}</td>
+                                        {% endif %}
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4">No activity yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <audio id="success-sound" src="{% static 'sounds/success.mp3' %}" preload="auto"></audio>
+    <audio id="error-sound" src="{% static 'sounds/error.mp3' %}" preload="auto"></audio>
+
+    <script src="{% static 'js/Security/Home.js' %}"></script>
+</body>
+</html>

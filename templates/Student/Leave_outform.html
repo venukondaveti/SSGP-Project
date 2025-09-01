@@ -1,0 +1,126 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave/Outing Request Form - SSGP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/Student/Leave_out.css' %}">
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="form-header">
+            <h1>Leave/Outing Request Form</h1>
+            <p>Please fill out the details below to request Leave/Outing.</p>
+        </div>
+
+        <form id="leaveRequestForm" method="post" action="{% url 'leave_request'%}">
+            {% csrf_token %}
+            <div class="form-section">
+                <h2>Student Details</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="studentId" class="form-label">Student ID</label>
+                        <input type="text" id="studentId" name="studentId" value="{{user.username}}" readonly class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentName" class="form-label">Full Name</label>
+                        <input type="text" id="studentName" name="studentName" value="{{user.first_name}} {{user.last_name}}" readonly class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="yearBranch" class="form-label">Year/Branch</label>
+                        <input type="text" id="yearBranch" name="yearBranch" value="E{{student.year}}/{{student.dept|upper}}" readonly class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobileNo" class="form-label">Mobile No</label>
+                        <input type="text" id="mobileNo" name="mobileNo" value="{{user.ph_no}}" readonly class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Request Details</h2>
+
+                <div id="form-errors" class="error-container" style="display: none;"></div>
+
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div class="form-group">
+                        <label class="form-label">Type of Request</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="requestType" value="leave" checked>
+                                <span>Leave</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="requestType" value="outing">
+                                <span>Outing</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="departureDateTime" class="form-label">Departure Date & Time</label>
+                            <input type="datetime-local" id="departureDateTime" name="departureDateTime" class="form-control" required>
+                        </div>
+                        <div class="form-group" id="return-date-group">
+                            <label for="returnDateTime" class="form-label">Return Date & Time</label>
+                            <input type="datetime-local" id="returnDateTime" name="returnDateTime" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reason" class="form-label">Reason</label>
+                        <textarea id="reason" name="reason" rows="4" class="form-control" placeholder="e.g., Medical Checkup at Hospital or Visiting local market." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Contact Parent Type</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="parentType" value="Father" checked>
+                                <span>Father</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="parentType" value="Mother">
+                                <span>Mother</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="parentType" value="Guardian">
+                                <span>Guardian</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parentName" class="form-label">Parent/Guardian's Name</label>
+                        <input type="text" id="parentName" name="parentName" class='form-control' placeholder="Enter The Name of Parent/Guardian" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="parentContact" class="form-label">Parent/Guardian's Contact Number</label>
+                        <input type="tel" 
+                               id="parentContact" 
+                               name="parentContact" 
+                               pattern="[0-9]{10}" 
+                               maxlength="10" class="form-control" 
+                               placeholder="Enter a 10-digit phone number" 
+                               required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="form-label">Address</label>
+                        <textarea id="address" name="address" rows="4" class="form-control" placeholder="Please enter your destination or native address" required></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <button type="submit" class="submit-btn">Submit Request</button>
+            </div>
+        </form>
+    </div>
+
+    <script src = "{% static 'js/Student/Leave_out.js' %}"></script>
+</body>
+</html>

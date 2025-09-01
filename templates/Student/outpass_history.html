@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outpass History - SSGP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{% static 'css/Student/outpass_history.css' %}">
+</head>
+<body>
+
+    <div class="main-content">
+        <header class="header">
+            <a href="{% url 'student_dashboard' %}" class="back-button" aria-label="Go back to Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" style="width:1.5rem; height:1.5rem;">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+            </a>
+            <h1 class="header-title">Outpass History</h1>
+        </header>
+
+        <main class="page-content">
+            <div class="container">
+                <div class="history-list">
+                    {% for outpass in gate_passes %}
+                    <div class="history-item" 
+                         data-id="{{ outpass.id }}"
+                         data-destination="{{ outpass.address }}" data-status="{{ outpass.status }}" 
+                         data-request-type="{{ outpass.get_request_type_display }}"
+                         data-rejection-reason="{{ outpass.rejection_reason|default:'' }}"
+                         
+                         data-request-time="{{ outpass.created_at|date:'d M Y, P' }}"
+                         data-approval-time="{{ outpass.approved_at|date:'d M Y, P'|default:'' }}"
+                         data-issue-time="{{ outpass.issued_at|date:'d M Y, P'|default:'' }}"
+                         data-exit-time="{{ outpass.exit_time|date:'d M Y, P'|default:'' }}"
+                         data-entry-time="{{ outpass.entry_time|date:'d M Y, P'|default:'' }}"
+                         >
+                        
+                        <div class="item-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:2rem; height:2rem;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                
+                        <div class="item-details">
+                            <p class="item-destination">{{ outpass.address|title }}</p> <p class="item-date">PassId: {{outpass.id}}| Depart: {{ outpass.departure_datetime|date:"d M Y, h:i A" }}| Excepted Return : {{outpass.return_datetime|date:"d M Y, h:i A"}}</p>
+                        </div>
+
+                        <div class="item-status">
+                            <span class="status-pill status-{{ outpass.status }}">{{ outpass.get_status_display }}</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <p class="empty-history-message">You have no outpass history yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="details-panel-overlay" class="details-panel-overlay"></div>
+    <div id="details-panel" class="details-panel">
+        <div class="panel-header">
+            <h3 id="panel-title">Outpass Details</h3>
+            <button id="panel-close" class="panel-close-btn">&times;</button>
+        </div>
+        <div id="panel-body" class="panel-body">
+            </div>
+        <div id="panel-footer" class="panel-footer hidden">
+            </div>
+    </div>
+
+    <script src="{% static 'js/Student/outpass_history.js' %}"></script>
+</body>
+</html>
